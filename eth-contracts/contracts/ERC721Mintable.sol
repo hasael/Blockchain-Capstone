@@ -24,9 +24,13 @@ contract Ownable {
         _owner = msg.sender;
     }
 
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) external onlyOwner {
         require(newOwner != address(0), "Provided address not valid");
         _owner = newOwner;
+    }
+
+     function getOwner() external view returns (address) {
+        return _owner;
     }
 }
 
@@ -607,13 +611,15 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      -takes in a 'to' address, tokenId, and tokenURI as parameters
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
-contract CustomERC721Token is
-    ERC721Metadata(
-        "MyToken",
-        "MT",
-        "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"
-    )
-{
+contract CustomERC721Token is ERC721Metadata {
+    constructor(string memory name, string memory symbol)
+        ERC721Metadata(
+            name,
+            symbol,
+            "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"
+        )
+    {}
+
     function mint(address to, uint256 tokenId)
         external
         onlyOwner

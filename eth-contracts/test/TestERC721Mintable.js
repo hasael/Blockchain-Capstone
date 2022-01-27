@@ -4,10 +4,12 @@ contract('TestERC721Mintable', accounts => {
 
     const account_one = accounts[0];
     const account_two = accounts[1];
+    const symbol = "ELT";
+    const name = "El Token";
 
     describe('match erc721 spec', function () {
         beforeEach(async function () {
-            this.contract = await ERC721MintableComplete.new({ from: account_one });
+            this.contract = await ERC721MintableComplete.new(name, symbol, { from: account_one });
 
             // TODO: mint multiple tokens
             await this.contract.mint(account_one, web3.utils.toBN(1), { from: account_one });
@@ -42,15 +44,24 @@ contract('TestERC721Mintable', accounts => {
 
     describe('have ownership properties', function () {
         beforeEach(async function () {
-            this.contract = await ERC721MintableComplete.new({ from: account_one });
+            this.contract = await ERC721MintableComplete.new(name, symbol, { from: account_one });
         })
 
         it('should fail when minting when address is not contract owner', async function () {
+            let errorMessage = null;
+            try {
+                await this.contract.mint(account_two, 6, { from: account_two });
+            } catch (e) {
+                errorMessage = e.message;
+            }
 
+            expect(errorMessage).to.match(/Only contract owner can do this action/);
         })
 
         it('should return contract owner', async function () {
 
+            let actual = await this.contract.getOwner();
+            assert.equal(actual, account_one, "Received owner incorrect");
         })
 
     });

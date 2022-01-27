@@ -11,7 +11,6 @@ var Verifier = artifacts.require('SquareVerifier');
 contract('Verifier', accounts => {
 
     const account_one = accounts[0];
-    const account_two = accounts[1];
 
     describe('checks proof correctly', function () {
         beforeEach(async function () {
