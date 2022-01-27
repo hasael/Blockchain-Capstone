@@ -3,5 +3,83 @@
 // Test verification with correct proof
 // - use the contents from proof.json generated from zokrates steps
 
-    
+
 // Test verification with incorrect proof
+
+var Verifier = artifacts.require('Verifier');
+
+contract('Verifier', accounts => {
+
+    const account_one = accounts[0];
+    const account_two = accounts[1];
+
+    describe('checks proof correctly', function () {
+        beforeEach(async function () {
+            this.contract = await Verifier.new({ from: account_one });
+
+        })
+
+        it('should return true on correct proof', async function () {
+            let proof = {
+                "a": [
+                    "0x28dec83418111fe6d2385e68af7406eb692d9c8b6bb293db8d0c4bfc0bf4001a",
+                    "0x01b5d40781c52609ddc7d68081b68d1ef8808ee2e1379657946d458d53d9bf27"
+                ],
+                "b": [
+                    [
+                        "0x2aebc1f769b7dcef71010bfeb0dfcf109f861f890f7ddc30b6a6b727927c4b65",
+                        "0x193b149792dbc355a3bc2e5b94bef745d874f34e280a65cdf8cdf233867eb3d6"
+                    ],
+                    [
+                        "0x050cf86ca6817960568d05447df62e8f7859448ce694715cdd3161b13c01395f",
+                        "0x02b81e5ffa54a1a2ca0130a1c27e6fa33603e380e4471b5518ccf840e3e27209"
+                    ]
+                ],
+                "c": [
+                    "0x2f73b1ed4d16d9841ff489c48ffb0e45c9e7c0d9bd704c94b2f95afcde21e30c",
+                    "0x1de9bd6966f8dabb69ece41c3b8dcc6d32f9480f0bba21237416f9bcca05667c"
+                ]
+            };
+            let inputs = [
+                "0x0000000000000000000000000000000000000000000000000000000000000010",
+                "0x0000000000000000000000000000000000000000000000000000000000000001"
+            ];
+
+            let result = await this.contract.verifyTx(proof, inputs);
+            assert.equal(result, true);
+        })
+
+        it('should return false on incorrect proof', async function () {
+            let incorrectProof = {
+                "a": [
+                    "0x09ff995a6cf9438aeb7f6a9d564292567694bb206140b735ee497c342e383546",
+                    "0x20db9a39923e51e7d154e91bf173fc1baefa768af52b7fd7793704a5c34d9d50"
+                ],
+                "b": [
+                    [
+                        "0x2c49c72f201ea0fa4ca2cde13f29830b78df88b133324340502a4d8c5f563462",
+                        "0x27162083a363f3ddecb7b96c137c85fb65f3187e722a8b1246e8fb9c4769e7a7"
+                    ],
+                    [
+                        "0x03b52089518dd11a0f52f5b8eb2bf1489b01f3a184222e44718ba8e6c81bfef8",
+                        "0x11160dca2b1defb7f88489ec2fae16872d04c2e2fc595b6da6b9ca097076befb"
+                    ]
+                ],
+                "c": [
+                    "0x120601153def73e25cb4bddab4f8581ac33088cf89ca063c31a2b9ac20d69f91",
+                    "0x03ada8ef3955a432b08f657b431813fa66d5cc1b3587c3b5af8f954f8d4a467b"
+                ]
+            };
+            let inputs = [
+                "0x0000000000000000000000000000000000000000000000000000000000000010",
+                "0x0000000000000000000000000000000000000000000000000000000000000001"
+            ];
+
+            let result = await this.contract.verifyTx(incorrectProof, inputs);
+            assert.equal(result, false);
+
+        })
+
+
+    });
+})
