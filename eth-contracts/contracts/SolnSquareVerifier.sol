@@ -9,9 +9,6 @@ contract SolnSquareVerifier{
 
 // TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
 
-contract SquareVerifier{
-
-}
 
 // TODO define a solutions struct that can hold an index & an address
 

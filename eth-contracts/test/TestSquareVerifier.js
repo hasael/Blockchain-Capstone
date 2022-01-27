@@ -6,7 +6,7 @@
 
 // Test verification with incorrect proof
 
-var Verifier = artifacts.require('Verifier');
+var Verifier = artifacts.require('SquareVerifier');
 
 contract('Verifier', accounts => {
 
