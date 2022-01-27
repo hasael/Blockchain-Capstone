@@ -16,7 +16,7 @@ contract Ownable {
 
     address private _owner;
     modifier onlyOwner() {
-        require(msg.sender == _owner);
+        require(msg.sender == _owner, "Only contract owner can do this action");
         _;
     }
 
@@ -220,7 +220,10 @@ contract ERC721 is Pausable, ERC165 {
         address to,
         uint256 tokenId
     ) public {
-        require(_isApprovedOrOwner(msg.sender, tokenId));
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "Not approved or owner of the token"
+        );
 
         _transferFrom(from, to, tokenId);
     }
@@ -283,6 +286,7 @@ contract ERC721 is Pausable, ERC165 {
             "Provided token already exists"
         );
         _tokenOwner[tokenId] = to;
+        _ownedTokensCount[to].increment();
         emit Transfer(msg.sender, to, tokenId);
     }
 
@@ -302,6 +306,8 @@ contract ERC721 is Pausable, ERC165 {
         require(to != address(0), "Invalid to address");
         _tokenApprovals[tokenId] = address(0);
         _ownedTokensCount[from].decrement();
+        _tokenOwner[tokenId] = to;
+        _ownedTokensCount[to].increment();
         emit Transfer(from, to, tokenId);
     }
 
@@ -586,7 +592,10 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 
     function setTokenURI(uint256 tokenId) internal {
         require(_exists(tokenId));
-        _tokenURIs[tokenId] = strConcat(_baseTokenURI, uint2str(tokenId));
+        //_tokenURIs[tokenId] = strConcat(_baseTokenURI, uint2str(tokenId));
+        _tokenURIs[tokenId] = string(
+            abi.encodePacked(_baseTokenURI, uint2str(tokenId))
+        );
     }
 }
 
@@ -611,7 +620,7 @@ contract CustomERC721Token is
         returns (bool)
     {
         super._mint(to, tokenId);
-        setTokenURI(tokenId);
+        super.setTokenURI(tokenId);
         return true;
     }
 }

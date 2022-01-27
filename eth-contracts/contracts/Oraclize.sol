@@ -532,7 +532,7 @@ contract usingOraclize {
         if (price > 1 ether + tx.gasprice * 200000) {
             return 0; // Unexpectedly high price
         }
-        return oraclize.query{ value: price }(_timestamp, _datasource, _arg);
+        return oraclize.query{value: price}(_timestamp, _datasource, _arg);
     }
 
     function oraclize_query(
@@ -546,7 +546,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         return
-            oraclize.query_withGasLimit{ value: price }(
+            oraclize.query_withGasLimit{value: price}(
                 _timestamp,
                 _datasource,
                 _arg,
@@ -564,7 +564,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         return
-            oraclize.query_withGasLimit{ value: price }(
+            oraclize.query_withGasLimit{value: price}(
                 0,
                 _datasource,
                 _arg,
@@ -581,7 +581,7 @@ contract usingOraclize {
         if (price > 1 ether + tx.gasprice * 200000) {
             return 0; // Unexpectedly high price
         }
-        return oraclize.query2{ value: price }(0, _datasource, _arg1, _arg2);
+        return oraclize.query2{value: price}(0, _datasource, _arg1, _arg2);
     }
 
     function oraclize_query(
@@ -595,7 +595,12 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         return
-            oraclize.query2{ value: price }(_timestamp, _datasource, _arg1, _arg2);
+            oraclize.query2{value: price}(
+                _timestamp,
+                _datasource,
+                _arg1,
+                _arg2
+            );
     }
 
     function oraclize_query(
@@ -610,7 +615,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         return
-            oraclize.query2_withGasLimit{ value: price }(
+            oraclize.query2_withGasLimit{value: price}(
                 _timestamp,
                 _datasource,
                 _arg1,
@@ -630,7 +635,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         return
-            oraclize.query2_withGasLimit{ value: price }(
+            oraclize.query2_withGasLimit{value: price}(
                 0,
                 _datasource,
                 _arg1,
@@ -649,7 +654,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         bytes memory args = stra2cbor(_argN);
-        return oraclize.queryN{ value: price }(0, _datasource, args);
+        return oraclize.queryN{value: price}(0, _datasource, args);
     }
 
     function oraclize_query(
@@ -662,7 +667,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         bytes memory args = stra2cbor(_argN);
-        return oraclize.queryN{ value: price }(_timestamp, _datasource, args);
+        return oraclize.queryN{value: price}(_timestamp, _datasource, args);
     }
 
     function oraclize_query(
@@ -677,7 +682,7 @@ contract usingOraclize {
         }
         bytes memory args = stra2cbor(_argN);
         return
-            oraclize.queryN_withGasLimit{ value: price }(
+            oraclize.queryN_withGasLimit{value: price}(
                 _timestamp,
                 _datasource,
                 args,
@@ -696,7 +701,7 @@ contract usingOraclize {
         }
         bytes memory args = stra2cbor(_argN);
         return
-            oraclize.queryN_withGasLimit{ value: price }(
+            oraclize.queryN_withGasLimit{value: price}(
                 0,
                 _datasource,
                 args,
@@ -959,7 +964,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         bytes memory args = ba2cbor(_argN);
-        return oraclize.queryN{ value: price }(0, _datasource, args);
+        return oraclize.queryN{value: price}(0, _datasource, args);
     }
 
     function oraclize_query(
@@ -972,7 +977,7 @@ contract usingOraclize {
             return 0; // Unexpectedly high price
         }
         bytes memory args = ba2cbor(_argN);
-        return oraclize.queryN{ value: price }(_timestamp, _datasource, args);
+        return oraclize.queryN{value: price}(_timestamp, _datasource, args);
     }
 
     function oraclize_query(
@@ -987,7 +992,7 @@ contract usingOraclize {
         }
         bytes memory args = ba2cbor(_argN);
         return
-            oraclize.queryN_withGasLimit{ value: price }(
+            oraclize.queryN_withGasLimit{value: price}(
                 _timestamp,
                 _datasource,
                 args,
@@ -1006,7 +1011,7 @@ contract usingOraclize {
         }
         bytes memory args = ba2cbor(_argN);
         return
-            oraclize.queryN_withGasLimit{ value: price }(
+            oraclize.queryN_withGasLimit{value: price}(
                 0,
                 _datasource,
                 args,
@@ -1542,9 +1547,12 @@ contract usingOraclize {
             j /= 10;
         }
         bytes memory bstr = new bytes(len);
-        uint256 k = len - 1;
+        uint256 k = len;
         while (_i != 0) {
-            bstr[k--] = bytes1(uint8(48 + (_i % 10)));
+            k = k - 1;
+            uint8 temp = (48 + uint8(_i - (_i / 10) * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
             _i /= 10;
         }
         return string(bstr);

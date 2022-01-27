@@ -1,12 +1,17 @@
 pragma solidity ^0.8.10;
 
+
 // TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
 
+contract SolnSquareVerifier{
 
+}
 
 // TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
 
+contract SquareVerifier{
 
+}
 
 // TODO define a solutions struct that can hold an index & an address
 
