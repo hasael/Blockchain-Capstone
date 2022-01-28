@@ -16,6 +16,10 @@
   "dependencies": {
     "openzeppelin-solidity": "^4.4.1",
     "solc": "^0.8.10",
-    "solc-js": "^1.0.1"
+    "solc-js": "^1.0.1",
+    "@truffle/hdwallet-provider": "^1.0.37",
+    "truffle": "^5.1.33",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "fs": "0.0.1-security"
   }
 }
