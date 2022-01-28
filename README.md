@@ -6,7 +6,8 @@ https://testnets.opensea.io/collection/el-token-v2
 10 tokens minted with 10 different proofs
 
 # Contract ABI
-Contract ABIs are under /eth-contracts/build/contracts
+Contract ABIs are under /eth-contracts/build/contracts.
+Main contract ABI is `SolnSquareVerifier.json`
 
 # Test
 Running `truffle test` 
